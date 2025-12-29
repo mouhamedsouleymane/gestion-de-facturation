@@ -252,7 +252,7 @@ La SPA est accessible via les routes suivantes :
 ### Étape 1 : Cloner le projet
 
 ```bash
-git clone https://github.com/donaldte/django-invoice.git
+git clone https://github.com/mouhamedsouleymane/django-invoice.git
 cd django-invoice
 ```
 
@@ -939,8 +939,8 @@ sudo apt-get install -y python3.9 python3-pip postgresql redis-server nginx
 **2. Cloner et configurer :**
 
 ```bash
-git clone https://github.com/donaldte/django-invoice.git
-cd django-invoice
+git clone https://github.com/mouhamedsouleymane/gestion de facturation.git
+cd gestion de facturation
 python3.9 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -1129,7 +1129,7 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 ## 👨‍💻 Auteur
 
-**Donald Tè** - [GitHub](https://github.com/donaldte)
+**Mouhamed SouleymaneMSIDev** - [GitHub](https://github.com/mouhamedsouleymane)
 
 ---
 

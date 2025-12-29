@@ -1,0 +1,91 @@
+<div class="row mb-4">
+  <div class="col-12 d-flex justify-content-between align-items-center">
+    <div>
+      <h1 class="h3 fw-bold mb-0"><i class="fas fa-gauge me-2 text-primary"></i>Dashboard</h1>
+      <p class="text-muted mb-0">Vue d'ensemble</p>
+    </div>
+    <button class="btn btn-outline-primary" ng-click="vm.refresh()">
+      <i class="fas fa-rotate me-2"></i>Rafraîchir
+    </button>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="card stat-card border-0 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div class="text-muted">Total factures</div>
+            <div class="h3 fw-bold">{$ vm.stats.totalInvoices $}</div>
+          </div>
+          <div class="stat-icon bg-primary"><i class="fas fa-file-invoice"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card stat-card border-0 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div class="text-muted">Payées</div>
+            <div class="h3 fw-bold text-success">{$ vm.stats.paidInvoices $}</div>
+          </div>
+          <div class="stat-icon bg-success"><i class="fas fa-check-circle"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card stat-card border-0 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div class="text-muted">En attente</div>
+            <div class="h3 fw-bold text-warning">{$ vm.stats.pendingInvoices $}</div>
+          </div>
+          <div class="stat-icon bg-warning"><i class="fas fa-hourglass-half"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-header bg-white border-bottom">
+    <div class="fw-bold"><i class="fas fa-list me-2 text-primary"></i>Factures récentes</div>
+  </div>
+  <div class="card-body p-0">
+    <div class="p-4" ng-if="vm.loading">Chargement…</div>
+
+    <div class="table-responsive" ng-if="!vm.loading">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Client</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Statut</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="inv in vm.recentInvoices">
+            <td><span class="badge bg-light text-dark">#{$ inv.id $}</span></td>
+            <td>{$ inv.customer_name $}</td>
+            <td>{$ inv.invoice_date_time $}</td>
+            <td><strong>{$ inv.total $} FCFA</strong></td>
+            <td>
+              <span class="badge bg-success-light text-success" ng-if="inv.paid"><i class="fas fa-check-circle me-1"></i>Payée</span>
+              <span class="badge bg-warning-light text-warning" ng-if="!inv.paid"><i class="fas fa-hourglass-half me-1"></i>En attente</span>
+            </td>
+            <td><span class="badge bg-info">{$ inv.invoice_type_display $}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

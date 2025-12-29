@@ -1,0 +1,79 @@
+/* Custom admin styles for Invoice System */
+:root {
+  --accent: #0d6efd;
+  --success: #198754;
+  --danger: #dc3545;
+  --muted: #6c757d;
+}
+
+/* General font and spacing */
+body#django-admin,
+.container-fluid {
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+  letter-spacing: 0.1px;
+}
+
+/* Header */
+#header,
+.navbar {
+  background: linear-gradient(
+    90deg,
+    rgba(13, 110, 253, 0.95),
+    rgba(41, 128, 185, 0.95)
+  );
+  color: #fff;
+}
+
+/* Site title */
+#header .site-name,
+.branding {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+/* Cards / boxes */
+.card,
+.module,
+.grp-module {
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(16, 24, 40, 0.06);
+}
+
+/* Table headers */
+table th {
+  background: #f8fafc;
+  color: #111827;
+  font-weight: 600;
+}
+
+/* Badges */
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.status-paid {
+  background: var(--success);
+}
+.status-unpaid {
+  background: var(--danger);
+}
+
+/* Make readonly boxes clearer */
+.field-readonly {
+  background: #fafafa;
+  border-left: 3px solid #e9ecef;
+  padding: 8px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .grp-module,
+  .module {
+    margin-bottom: 12px;
+  }
+}

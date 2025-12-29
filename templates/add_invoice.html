@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <!-- Header -->
+    <div class="mb-4">
+      <h1 class="h2 fw-bold mb-1">
+        <i class="fas fa-file-invoice me-2 text-primary"></i>
+        {% trans 'Create New Invoice' %}
+      </h1>
+      <p class="text-muted">{% trans 'Add invoice details and line items' %}</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4">
+        <form method="post" novalidate>
+          {% csrf_token %}
+
+          <!-- Customer and Type Row -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <label for="{{ form.customer.id_for_label }}" class="form-label fw-500">
+                <i class="fas fa-user me-2 text-primary"></i>{{ form.customer.label }}
+              </label>
+              {{ form.customer }}
+              {% if form.customer.errors %}
+              <div class="invalid-feedback d-block">
+                <i class="fas fa-exclamation-circle me-1"></i>{{ form.customer.errors|striptags }}
+              </div>
+              {% endif %}
+            </div>
+            <div class="col-md-6">
+              <label for="{{ form.invoice_type.id_for_label }}" class="form-label fw-500">
+                <i class="fas fa-tag me-2 text-primary"></i>{{ form.invoice_type.label }}
+              </label>
+              {{ form.invoice_type }}
+              {% if form.invoice_type.errors %}
+              <div class="invalid-feedback d-block">
+                <i class="fas fa-exclamation-circle me-1"></i>{{ form.invoice_type.errors|striptags }}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Articles Section -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold mb-0">
+                <i class="fas fa-list me-2 text-primary"></i>{% trans 'Line Items' %}
+              </h5>
+              <div class="btn-group btn-group-sm" role="group">
+                <button id="btn-add" type="button" class="btn btn-outline-success">
+                  <i class="fas fa-plus me-1"></i>{% trans 'Add Line' %}
+                </button>
+                <button id="btn-remove" type="button" class="btn btn-outline-danger">
+                  <i class="fas fa-minus me-1"></i>{% trans 'Remove Line' %}
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead class="table-light">
+                  <tr>
+                    <th>{% trans 'Product/Service' %}</th>
+                    <th class="text-center" style="width: 100px;">{% trans 'Quantity' %}</th>
+                    <th class="text-end" style="width: 120px;">{% trans 'Unit Price' %}</th>
+                    <th class="text-end" style="width: 120px;">{% trans 'Total' %}</th>
+                  </tr>
+                </thead>
+                <tbody id="wrapper">
+                  {% for aform in articles.forms %}
+                  <tr class="article-row">
+                    <td>
+                      {{ aform.name }}
+                      {% if aform.name.errors %}
+                      <div class="invalid-feedback d-block">{{ aform.name.errors|striptags }}</div>
+                      {% endif %}
+                    </td>
+                    <td class="text-center">
+                      {{ aform.quantity }}
+                      {% if aform.quantity.errors %}
+                      <div class="invalid-feedback d-block">{{ aform.quantity.errors|striptags }}</div>
+                      {% endif %}
+                    </td>
+                    <td class="text-end">
+                      {{ aform.unit_price }}
+                      {% if aform.unit_price.errors %}
+                      <div class="invalid-feedback d-block">{{ aform.unit_price.errors|striptags }}</div>
+                      {% endif %}
+                    </td>
+                    <td class="text-end">
+                      <input type="text" class="form-control form-control-sm text-end line-total" readonly 
+                             value="0.00">
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Totals Section -->
+          <div class="row mb-4">
+            <div class="col-md-6 ms-auto">
+              <div class="card bg-light border-0">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>{% trans 'Subtotal' %}:</span>
+                    <span id="subtotal" class="fw-bold">0.00 FCFA</span>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>{% trans 'Tax' %}:</span>
+                    <span id="tax" class="fw-bold">0.00 FCFA</span>
+                  </div>
+                  <hr>
+                  <div class="d-flex justify-content-between">
+                    <span class="fw-bold">{% trans 'Total' %}:</span>
+                    <span id="total" class="fw-bold text-primary" style="font-size: 1.25rem;">0.00 FCFA</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments Section -->
+          <div class="mb-4">
+            <label for="{{ form.comments.id_for_label }}" class="form-label fw-500">
+              <i class="fas fa-comment me-2 text-primary"></i>{{ form.comments.label }}
+            </label>
+            {{ form.comments }}
+            {% if form.comments.errors %}
+            <div class="invalid-feedback d-block">
+              <i class="fas fa-exclamation-circle me-1"></i>{{ form.comments.errors|striptags }}
+            </div>
+            {% endif %}
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="d-flex gap-2 justify-content-between">
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+              <i class="fas fa-arrow-left me-2"></i>{% trans 'Cancel' %}
+            </a>
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="fas fa-save me-2"></i>{% trans 'Create Invoice' %}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .form-control, .form-select {
+    border-radius: 0.5rem;
+    border: 1px solid #e0e0e0;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  }
+
+  .form-label {
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+
+  .article-row input {
+    border-radius: 0.375rem;
+    border: 1px solid #e0e0e0;
+  }
+
+  .article-row input:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  }
+
+  .line-total {
+    background-color: #f8f9fa;
+    font-weight: 500;
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const wrapper = document.getElementById('wrapper');
+  const btnAdd = document.getElementById('btn-add');
+  const btnRemove = document.getElementById('btn-remove');
+
+  function updateTotals() {
+    let subtotal = 0;
+    document.querySelectorAll('.article-row').forEach(row => {
+      const qty = parseFloat(row.querySelector('input[name$="quantity"]').value) || 0;
+      const price = parseFloat(row.querySelector('input[name$="unit_price"]').value) || 0;
+      const lineTotal = qty * price;
+      row.querySelector('.line-total').value = lineTotal.toFixed(2);
+      subtotal += lineTotal;
+    });
+    
+    const tax = subtotal * 0.19; // 19% tax
+    const total = subtotal + tax;
+    
+    document.getElementById('subtotal').textContent = subtotal.toFixed(2) + ' FCFA';
+    document.getElementById('tax').textContent = tax.toFixed(2) + ' FCFA';
+    document.getElementById('total').textContent = total.toFixed(2) + ' FCFA';
+  }
+
+  btnAdd.addEventListener('click', function(e) {
+    e.preventDefault();
+    const firstRow = wrapper.querySelector('.article-row');
+    const clone = firstRow.cloneNode(true);
+    clone.querySelectorAll('input').forEach(input => input.value = '');
+    wrapper.appendChild(clone);
+    attachInputListeners();
+    updateTotals();
+  });
+
+  btnRemove.addEventListener('click', function(e) {
+    e.preventDefault();
+    if (wrapper.children.length > 1) {
+      wrapper.lastElementChild.remove();
+      updateTotals();
+    }
+  });
+
+  function attachInputListeners() {
+    document.querySelectorAll('input[name$="quantity"], input[name$="unit_price"]').forEach(input => {
+      input.addEventListener('change', updateTotals);
+      input.addEventListener('keyup', updateTotals);
+    });
+  }
+
+  attachInputListeners();
+  updateTotals();
+});
+</script>
+
+{% endblock %}
